@@ -22,9 +22,24 @@ func Wrapf(err error, format string, args ...interface{}) error {
 	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 1)
 }
 
+func Cause(err error) error {
+	type unwrapper interface {
+		Unwrap() error
+	}
+
+	for err != nil {
+		cause, ok := err.(unwrapper)
+		if !ok {
+			break
+		}
+		err = cause.Unwrap()
+	}
+	return err
+}
+
 func StackTrace(err error) []string {
 	list := errors.Wrap(err, 1).StackFrames()
-	stack := []string{err.Error()}
+	stack := []string{Cause(err).Error()}
 
 	for _, frame := range list {
 		line, _ := frame.SourceLine()

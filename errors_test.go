@@ -45,6 +45,16 @@ func openError() error {
 	return Wrap(err, "opening file")
 }
 
+func TestCause(t *testing.T) {
+	err := openError()
+	assert.Error(t, err)
+
+	orig := Cause(err)
+	assert.Error(t, orig)
+	assert.NotEqual(t, err, orig)
+	assert.Equal(t, "no such file or directory", orig.Error())
+}
+
 func TestStackTrace2(t *testing.T) {
 	err := openError()
 	stack := StackTrace(Wrap(err, "test"))
@@ -56,6 +66,7 @@ func TestStackTrace2(t *testing.T) {
 
 func TestErrorStack(t *testing.T) {
 	err := openError()
+	assert.Error(t, err)
 	stack := ErrorStack(Wrap(err, "test"))
 	assert.NotEmpty(t, stack)
 	fmt.Println(stack)
