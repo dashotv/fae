@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/go-errors/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -68,6 +69,13 @@ func TestErrorStack(t *testing.T) {
 	err := openError()
 	assert.Error(t, err)
 	stack := ErrorStack(Wrap(err, "test"))
+	assert.NotEmpty(t, stack)
+	fmt.Println(stack)
+}
+func TestErrors_ErrorStack(t *testing.T) {
+	err := openError()
+	assert.Error(t, err)
+	stack := errors.Wrap(err, 1).ErrorStack()
 	assert.NotEmpty(t, stack)
 	fmt.Println(stack)
 }
