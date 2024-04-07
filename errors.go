@@ -6,23 +6,38 @@ import (
 	"github.com/go-errors/errors"
 )
 
-func New(message interface{}) error {
+type Error = errors.Error
+type Errorish interface {
+	Error() string
+}
+
+func New(message interface{}) *Error {
 	return errors.New(message)
 }
 
-func Errorf(format string, args ...interface{}) error {
+func Errorf(format string, args ...interface{}) *Error {
 	return errors.Errorf(format, args...)
 }
 
-func Wrap(err error, message string) error {
-	return errors.WrapPrefix(err, message, 1)
+func Wrap(err Errorish, message string) *Error {
+	if err == nil {
+		return nil
+	}
+	return errors.WrapPrefix(err, message, 2) // TODO: this might need to be 2, need to test stacktraces more
 }
 
-func Wrapf(err error, format string, args ...interface{}) error {
-	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 1)
+func Wrapf(err Errorish, format string, args ...interface{}) *Error {
+	if err == nil {
+		return nil
+	}
+	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 2) // TODO: this might need to be 2, need to test stacktraces more
 }
 
-func Cause(err error) error {
+func Cause(err Errorish) *Error {
+	if err == nil {
+		return nil
+	}
+
 	type unwrapper interface {
 		Unwrap() error
 	}
@@ -34,10 +49,10 @@ func Cause(err error) error {
 		}
 		err = cause.Unwrap()
 	}
-	return err
+	return err.(*Error)
 }
 
-func StackTrace(err error) []string {
+func StackTrace(err Errorish) []string {
 	if err == nil {
 		return nil
 	}
