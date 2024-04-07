@@ -15,11 +15,11 @@ func Errorf(format string, args ...interface{}) error {
 }
 
 func Wrap(err error, message string) error {
-	return errors.WrapPrefix(err, message, 1)
+	return errors.WrapPrefix(err, message, 2) // TODO: this might need to be 2, need to test stacktraces more
 }
 
 func Wrapf(err error, format string, args ...interface{}) error {
-	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 1)
+	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 2) // TODO: this might need to be 2, need to test stacktraces more
 }
 
 func Cause(err error) error {
