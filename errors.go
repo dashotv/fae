@@ -47,6 +47,9 @@ func Cause(err Errorish) *Error {
 		if !ok {
 			break
 		}
+		if cause == nil {
+			break
+		}
 		err = cause.Unwrap()
 	}
 	return err.(*Error)
