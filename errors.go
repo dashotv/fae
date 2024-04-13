@@ -23,14 +23,14 @@ func Wrap(err Errorish, message string) *Error {
 	if err == nil {
 		return nil
 	}
-	return errors.WrapPrefix(err, message, 1) // TODO: this might need to be 2, need to test stacktraces more
+	return errors.WrapPrefix(err, message, 1)
 }
 
 func Wrapf(err Errorish, format string, args ...interface{}) *Error {
 	if err == nil {
 		return nil
 	}
-	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 1) // TODO: this might need to be 2, need to test stacktraces more
+	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 1)
 }
 
 func Cause(err Errorish) error {
