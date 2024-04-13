@@ -33,7 +33,7 @@ func Wrapf(err Errorish, format string, args ...interface{}) *Error {
 	return errors.WrapPrefix(err, fmt.Sprintf(format, args...), 2) // TODO: this might need to be 2, need to test stacktraces more
 }
 
-func Cause(err Errorish) *Error {
+func Cause(err Errorish) error {
 	if err == nil {
 		return nil
 	}
@@ -52,7 +52,7 @@ func Cause(err Errorish) *Error {
 		}
 		err = cause.Unwrap()
 	}
-	return err.(*Error)
+	return err
 }
 
 func StackTrace(err Errorish) []string {
