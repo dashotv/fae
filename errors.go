@@ -11,22 +11,25 @@ type Errorish interface {
 	Error() string
 }
 
-func New(message interface{}) *Error {
+func New(message interface{}) error {
+	if message == nil {
+		return nil
+	}
 	return errors.New(message)
 }
 
-func Errorf(format string, args ...interface{}) *Error {
+func Errorf(format string, args ...interface{}) error {
 	return errors.Errorf(format, args...)
 }
 
-func Wrap(err Errorish, message string) *Error {
+func Wrap(err Errorish, message string) error {
 	if err == nil {
 		return nil
 	}
 	return errors.WrapPrefix(err, message, 1)
 }
 
-func Wrapf(err Errorish, format string, args ...interface{}) *Error {
+func Wrapf(err Errorish, format string, args ...interface{}) error {
 	if err == nil {
 		return nil
 	}

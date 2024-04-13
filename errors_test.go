@@ -79,3 +79,11 @@ func TestErrors_ErrorStack(t *testing.T) {
 	assert.NotEmpty(t, stack)
 	fmt.Println(stack)
 }
+
+func TestError_Nil(t *testing.T) {
+	err := New(nil)
+	assert.Nil(t, err)
+
+	wrapped := Wrap(err, "test")
+	assert.Nil(t, wrapped)
+}
