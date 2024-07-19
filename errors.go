@@ -65,7 +65,7 @@ func StackTrace(err Errorish) []string {
 
 	list := errors.Wrap(err, 1).StackFrames()
 	cause := Cause(err)
-	stack := []string{cause.Error()}
+	stack := []string{cause.Error(), err.Error()}
 
 	for _, frame := range list {
 		// stack = append(stack, fmt.Sprintf("%s.%s %s:%d (0x%x)", frame.Package, frame.Name, frame.File, frame.LineNumber, frame.ProgramCounter))
